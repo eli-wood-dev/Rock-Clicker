@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Clicker</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="js/gameData.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/game.js"></script>
+</head>
+
+<body>
+  <div class="page">
+
+    <header class="topbar">
+      <h1 class="brand">Rock Clicker</h1>
+      <p class="tagline">Click rocks. Buy gear. Mine faster.</p>
+    </header>
+
+    <main class="layout">
+
+      <section class="panel panel-left">
+        <h2 class="panel-title">Mine</h2>
+
+        <div class="click-area">
+          <img src="images/rock.png" id="clickTarget" class="rock" alt="A rock to click">
+          <p class="hint">Click the rock to get rocks!</p>
+        </div>
+      </section>
+
+      <section class="panel panel-mid">
+        <h2 class="panel-title">Stats</h2>
+
+        <div class="stats">
+          <div class="stat-box">
+            <div class="stat-label">Rocks</div>
+            <div class="stat-value" id="currencyDisplay">0</div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-label">Per second</div>
+            <div class="stat-value" id="rpsDisplay">+ <span>0</span></div>
+          </div>
+        </div>
+
+        <div class="notes">
+          <p class="small">
+            Tip: Your “per second” increases when you buy buildings/upgrades.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel panel-right">
+        <h2 class="panel-title">Shop</h2>
+
+        <div class="shop-section">
+          <h3 class="shop-title">Buildings</h3>
+
+          <button class="shop-item" type="button" id="buyPointerBtn">
+            <span class="shop-name">Pointer</span>
+            <span class="shop-meta">+0.1 rps</span>
+            <span class="shop-meta price">10 Rocks</span>
+            <span class="shop-meta amount">0</span>
+          </button>
+
+          <button class="shop-item" type="button" id="buyPickaxeBtn">
+            <span class="shop-name">Pickaxe</span>
+            <span class="shop-meta">+1 rps</span>
+            <span class="shop-meta price">50 Rocks</span>
+            <span class="shop-meta amount">0</span>
+          </button>
+        </div>
+
+        <div class="shop-section" id="upgrade-shop">
+          <h3 class="shop-title">Upgrades</h3>
+        </div>
+
+        <div class="shop-section">
+          <h3 class="shop-title">Save</h3>
+          <button class="danger" type="button" id="resetBtn">Reset Save</button>
+          <p class="small warn">Reset will wipe your progress.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p class="small">COMPSCI 1XD3 - Rock Clicker</p>
+    </footer>
+
+  </div>
+</body>
+</html>
