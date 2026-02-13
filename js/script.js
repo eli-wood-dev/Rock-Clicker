@@ -115,6 +115,9 @@ window.addEventListener("load", () => {
             }
             b.classList.add("hidden")
 
+            updateGameRPS();
+            updateCurrency();
+            updateRPS();
         })
 
         //if already bought on this save
