@@ -35,8 +35,8 @@ window.addEventListener("load", () => {
     });
 
     // Grab buttons
-    buyPointerBtn = document.querySelector("#buyPointerBtn");
-    buyPickaxeBtn = document.querySelector("#buyPickaxeBtn");
+    buyPointerBtn = document.querySelector("#click");
+    buyPickaxeBtn = document.querySelector("#pickaxe");
     //   buyClickUpgradeBtn = document.querySelector("#buyClickUpgradeBtn");
     //   buyPickaxeUpgradeBtn = document.querySelector("#buyPickaxeUpgradeBtn");
     upgradeShop = document.querySelector("#upgrade-shop")
@@ -115,6 +115,8 @@ window.addEventListener("load", () => {
             }
             b.classList.add("hidden")
 
+            updateBuildingRpsGain(document.querySelector("#click"))
+
             updateGameRPS();
             updateCurrency();
             updateRPS();
@@ -130,9 +132,11 @@ window.addEventListener("load", () => {
 
     buyPointerBtn.querySelector(".amount").textContent = gameData.buildings.pointer.amount
     buyPointerBtn.querySelector(".price").textContent = gameData.buildings.pointer.price + " Rocks"
+    updateBuildingRpsGain(buyPointerBtn)
 
     buyPickaxeBtn.querySelector(".amount").textContent = gameData.buildings.pickaxe.amount
     buyPickaxeBtn.querySelector(".price").textContent = gameData.buildings.pickaxe.price + " Rocks"
+    updateBuildingRpsGain(buyPickaxeBtn)
 
     //   // Wire upgrade buttons (buys the next upgrade in the chain)
     //   buyClickUpgradeBtn.addEventListener("click", () => {
@@ -231,4 +235,8 @@ function getNextUpgradeKey(prefix) {
     }
 
     return null;
+}
+
+function updateBuildingRpsGain(element){
+    element.querySelector(".rps").innerText = "+" + (gameData.buildings[element.value].rps * (2**getUpgradeCount(element.id))) + " rps"
 }
