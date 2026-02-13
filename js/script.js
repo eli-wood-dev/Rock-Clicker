@@ -115,7 +115,7 @@ window.addEventListener("load", () => {
             }
             b.classList.add("hidden")
 
-            updateBuildingRpsGain(document.querySelector("#click"))
+            updateBuildingRpsGain(document.querySelector("#" + b.id.split("-")[0]))
 
             updateGameRPS();
             updateCurrency();
