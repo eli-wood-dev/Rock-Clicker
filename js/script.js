@@ -5,6 +5,7 @@ let rpsDisplay;
 let buyPointerBtn;
 let buyPickaxeBtn;
 let upgradeShop;
+let achievementDisplay;
 let resetBtn;
 
 // In ms
@@ -40,6 +41,7 @@ window.addEventListener("load", () => {
     //   buyClickUpgradeBtn = document.querySelector("#buyClickUpgradeBtn");
     //   buyPickaxeUpgradeBtn = document.querySelector("#buyPickaxeUpgradeBtn");
     upgradeShop = document.querySelector("#upgrade-shop")
+    achievementDisplay = document.querySelector("#achievement-display")
     resetBtn = document.querySelector("#resetBtn");
 
     // Wire building buttons
@@ -100,7 +102,7 @@ window.addEventListener("load", () => {
         let buttonPrice = document.createElement("span")
         buttonPrice.classList.add("shop-meta")
         buttonPrice.classList.add("price")
-        buttonPrice.innerText = value.price
+        buttonPrice.innerText = value.price + " Rocks"
         b.appendChild(buttonPrice)
 
         //buy upgrade
@@ -128,6 +130,98 @@ window.addEventListener("load", () => {
         }
 
         upgradeShop.appendChild(b)
+    }
+
+    for (a of gameData.achievements.score) {
+        let e = document.createElement("div")
+        e.classList.add("achievement-item")
+        e.id = "score-" + a.condition
+
+        let achievementName = document.createElement("span")
+        achievementName.classList.add("shop-name")
+        achievementName.innerText = a.name
+        e.appendChild(achievementName)
+
+        let achievementDesc = document.createElement("span")
+        achievementDesc.classList.add("shop-meta")
+        achievementDesc.innerText = a.description
+        e.appendChild(achievementDesc)
+
+        achievementDisplay.appendChild(e)
+    }
+
+    for (a of gameData.achievements.rps) {
+        let e = document.createElement("div")
+        e.classList.add("achievement-item")
+        e.id = "rps-" + a.condition
+
+        let achievementName = document.createElement("span")
+        achievementName.classList.add("shop-name")
+        achievementName.innerText = a.name
+        e.appendChild(achievementName)
+
+        let achievementDesc = document.createElement("span")
+        achievementDesc.classList.add("shop-meta")
+        achievementDesc.innerText = a.description
+        e.appendChild(achievementDesc)
+
+        achievementDisplay.appendChild(e)
+    }
+
+    for (a of gameData.achievements.upgradeCount) {
+        let e = document.createElement("div")
+        e.classList.add("achievement-item")
+        e.id = "upgradeCount-" + a.condition
+
+        let achievementName = document.createElement("span")
+        achievementName.classList.add("shop-name")
+        achievementName.innerText = a.name
+        e.appendChild(achievementName)
+
+        let achievementDesc = document.createElement("span")
+        achievementDesc.classList.add("shop-meta")
+        achievementDesc.innerText = a.description
+        e.appendChild(achievementDesc)
+
+        achievementDisplay.appendChild(e)
+    }
+
+    for (const [key, value] of Object.entries(gameData.achievements.building)){
+        for (a of value){
+            let e = document.createElement("div")
+            e.classList.add("achievement-item")
+            e.id = "building-" + key + "-" + a.condition
+
+            let achievementName = document.createElement("span")
+            achievementName.classList.add("shop-name")
+            achievementName.innerText = a.name
+            e.appendChild(achievementName)
+
+            let achievementDesc = document.createElement("span")
+            achievementDesc.classList.add("shop-meta")
+            achievementDesc.innerText = a.description
+            e.appendChild(achievementDesc)
+
+            achievementDisplay.appendChild(e)
+        }
+    }
+
+    for (const [key, value] of Object.entries(gameData.achievements.special)){
+        let e = document.createElement("div")
+        e.classList.add("achievement-item")
+        e.id = "special-" + key
+
+        let achievementName = document.createElement("span")
+        achievementName.classList.add("shop-name")
+        achievementName.innerText = value.name
+        e.appendChild(achievementName)
+
+        let achievementDesc = document.createElement("span")
+        achievementDesc.classList.add("shop-meta")
+        achievementDesc.innerText = value.description
+        e.appendChild(achievementDesc)
+
+        achievementDisplay.appendChild(e)
     }
 
     buyPointerBtn.querySelector(".amount").textContent = gameData.buildings.pointer.amount
@@ -182,6 +276,28 @@ window.addEventListener("load", () => {
         updateRPS();
     });
 
+    gameData.achievements.score.filter(a=>a.obtained).forEach(a=>{
+        achievementDisplay.querySelector("#score-" + a.condition).classList.add("achieved")
+    })
+
+    gameData.achievements.rps.filter(a=>a.obtained).forEach(a=>{
+        achievementDisplay.querySelector("#rps-" + a.condition).classList.add("achieved")
+    })
+
+    gameData.achievements.upgradeCount.filter(a=>a.obtained).forEach(a=>{
+        achievementDisplay.querySelector("#upgradeCount-" + a.condition).classList.add("achieved")
+    })
+
+    for (const [key, value] of Object.entries(gameData.achievements.building)){
+        value.filter(a=>a.obtained).forEach(a=>{
+            achievementDisplay.querySelector("#building-" + key + "-" + a.condition).classList.add("achieved")
+        })
+    }
+
+    for (const [key, value] of Object.entries(gameData.achievements.special).filter(a=>a.obtained)){
+        achievementDisplay.querySelector("#special-" + key).classList.add("achieved")
+    }
+
     // Start the game tick loop
     setInterval(gameTick, tickInterval);
 
@@ -198,6 +314,7 @@ function resetGameData() {
     // IMPORTANT: make a fresh copy, not a reference
     gameData = JSON.parse(JSON.stringify(defaultGameData));
     localStorage.setItem("gameData", JSON.stringify(gameData));
+    window.location.reload()
 }
 
 /*

@@ -74,14 +74,14 @@ function checkAchievements(){
     gameData.achievements.score.filter(a=>!a.obtained).forEach(a=>{
         if(gameData.score >= a.condition){
             a.obtained = true;
-            //do something special
+            achievementDisplay.querySelector("#score-" + a.condition).classList.add("achieved")
         }
     })
 
     gameData.achievements.rps.filter(a=>!a.obtained).forEach(a=>{
         if(gameData.rps >= a.condition){
             a.obtained = true;
-            //do something special
+            achievementDisplay.querySelector("#rps-" + a.condition).classList.add("achieved")
         }
     })
 
@@ -94,7 +94,7 @@ function checkAchievements(){
         }
         if(upgrades >= a.condition){
             a.obtained = true;
-            //do something special
+            achievementDisplay.querySelector("#upgradeCount-" + a.condition).classList.add("achieved")
         }
     })
 
@@ -102,11 +102,13 @@ function checkAchievements(){
         value.filter(a=>!a.obtained).forEach(a=>{
             if(gameData.buildings[key].amount >= a.condition){
                 a.obtained = true
+                achievementDisplay.querySelector("#building-" + key + "-" + a.condition).classList.add("achieved")
             }
         })
     }
 
     if(gameData.ticksPlayed*tickInterval >= 600000){
         gameData.achievements.special["playtime-10m"].obtained = true
+        achievementDisplay.querySelector("#special-playtime-10m").classList.add("achieved")
     }
 }

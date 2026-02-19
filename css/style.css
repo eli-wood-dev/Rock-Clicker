@@ -138,6 +138,19 @@ body {
   background: #f0f0f0;
 }
 
+.achievement-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #db1414;
+  background: #fafafa;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.achieved {
+  border: 1px solid #0ad10a;
+}
+
 .shop-name {
   display: block;
   font-weight: bold;
