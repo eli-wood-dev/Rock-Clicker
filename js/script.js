@@ -1,5 +1,6 @@
 let currencyDisplay;
 let rpsDisplay;
+let clickValueDisplay;
 
 // Buttons
 let buyPointerBtn;
@@ -26,6 +27,9 @@ window.addEventListener("load", () => {
     // Grab displays
     currencyDisplay = document.querySelector("#currencyDisplay");
     rpsDisplay = document.querySelector("#rpsDisplay span");
+    clickValueDisplay = document.querySelector("#click-value-display");
+
+    clickValueDisplay.innerText = 2**getUpgradeCount("click");
 
     // Wire the rock click
     const clicker = document.querySelector("#clickTarget");
@@ -115,6 +119,9 @@ window.addEventListener("load", () => {
             updateGameRPS();
             updateCurrency();
             updateRPS();
+
+            //hardcoded for now, could add logic to make this for just the `click` upgrades
+            clickValueDisplay.innerText = 2**getUpgradeCount("click");
         })
 
         //if already bought on this save
