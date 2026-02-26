@@ -287,6 +287,37 @@ window.addEventListener("load", () => {
     updateGameRPS();
     updateCurrency();
     updateRPS();
+
+    let helpBtn = document.querySelector("#helpBtn");
+    let helpPanel = document.querySelector("#helpPanel");
+    let helpUpgrades = document.querySelector("#helpUpgrades");
+    let helpAchievements = document.querySelector("#helpAchievements");
+
+    for (let key in gameData.upgrades) {
+        let li = document.createElement("li");
+        li.textContent = gameData.upgrades[key].name + 
+                        " - " + gameData.upgrades[key].description;
+        helpUpgrades.appendChild(li);
+    }
+
+    for (let group in gameData.achievements) {
+        if (Array.isArray(gameData.achievements[group])) {
+            for (let i = 0; i < gameData.achievements[group].length; i++) {
+                let a = gameData.achievements[group][i];
+                let li = document.createElement("li");
+                li.textContent = a.name + " - " + a.description;
+                helpAchievements.appendChild(li);
+            }
+        }
+    }
+
+    helpBtn.addEventListener("click", function() {
+        if (helpPanel.classList.contains("hidden")) {
+            helpPanel.classList.remove("hidden");
+        } else {
+            helpPanel.classList.add("hidden");
+        }
+    });
 });
 
 /*
