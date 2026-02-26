@@ -38,8 +38,6 @@ window.addEventListener("load", () => {
     // Grab buttons
     buyPointerBtn = document.querySelector("#click");
     buyPickaxeBtn = document.querySelector("#pickaxe");
-    //   buyClickUpgradeBtn = document.querySelector("#buyClickUpgradeBtn");
-    //   buyPickaxeUpgradeBtn = document.querySelector("#buyPickaxeUpgradeBtn");
     upgradeShop = document.querySelector("#upgrade-shop")
     achievementDisplay = document.querySelector("#achievement-display")
     resetBtn = document.querySelector("#resetBtn");
@@ -77,12 +75,7 @@ window.addEventListener("load", () => {
         updateRPS();
     });
 
-    /*
-      <button class="shop-item" type="button" id="buyClickUpgradeBtn">
-          <span class="shop-name">Click Upgrade</span>
-          <span class="shop-meta">Doubles click power</span>
-      </button>
-    */
+    // Create buttons for all upgrades
     for ([key, value] of Object.entries(gameData.upgrades)) {
         let b = document.createElement("button");
         b.classList.add("shop-item")
@@ -129,9 +122,26 @@ window.addEventListener("load", () => {
             b.classList.add("hidden")
         }
 
+        //hardcoded solution to add upgrade images - might change
+        let img = document.createElement("img");
+        img.classList.add("shop-img");
+
+        if (key === "pickaxe-1") img.src = "images/stone.png";
+        if (key === "pickaxe-2") img.src = "images/iron.png";
+        if (key === "pickaxe-3") img.src = "images/diamond.png";
+        if (key === "pickaxe-4") img.src = "images/netherite.png";
+        if (key.startsWith("click")) img.src = "images/pointer.png";
+
+        img.alt = value.name;
+
+        b.appendChild(img);
+
         upgradeShop.appendChild(b)
     }
 
+    // Add all achievements
+
+    // Score based achievements
     for (a of gameData.achievements.score) {
         let e = document.createElement("div")
         e.classList.add("achievement-item")
@@ -150,6 +160,7 @@ window.addEventListener("load", () => {
         achievementDisplay.appendChild(e)
     }
 
+    // RPS based achievements
     for (a of gameData.achievements.rps) {
         let e = document.createElement("div")
         e.classList.add("achievement-item")
@@ -168,6 +179,7 @@ window.addEventListener("load", () => {
         achievementDisplay.appendChild(e)
     }
 
+    // Upgrade count based achievements
     for (a of gameData.achievements.upgradeCount) {
         let e = document.createElement("div")
         e.classList.add("achievement-item")
@@ -186,6 +198,7 @@ window.addEventListener("load", () => {
         achievementDisplay.appendChild(e)
     }
 
+    // Building count based achievements
     for (const [key, value] of Object.entries(gameData.achievements.building)){
         for (a of value){
             let e = document.createElement("div")
@@ -206,6 +219,7 @@ window.addEventListener("load", () => {
         }
     }
 
+    // Special achievements
     for (const [key, value] of Object.entries(gameData.achievements.special)){
         let e = document.createElement("div")
         e.classList.add("achievement-item")
@@ -224,6 +238,7 @@ window.addEventListener("load", () => {
         achievementDisplay.appendChild(e)
     }
 
+    //sets initial rps gain on building tooltips to be the correct value from the save file
     buyPointerBtn.querySelector(".amount").textContent = gameData.buildings.pointer.amount
     buyPointerBtn.querySelector(".price").textContent = gameData.buildings.pointer.price + " Rocks"
     updateBuildingRpsGain(buyPointerBtn)
@@ -231,39 +246,6 @@ window.addEventListener("load", () => {
     buyPickaxeBtn.querySelector(".amount").textContent = gameData.buildings.pickaxe.amount
     buyPickaxeBtn.querySelector(".price").textContent = gameData.buildings.pickaxe.price + " Rocks"
     updateBuildingRpsGain(buyPickaxeBtn)
-
-    //   // Wire upgrade buttons (buys the next upgrade in the chain)
-    //   buyClickUpgradeBtn.addEventListener("click", () => {
-    //     const key = getNextUpgradeKey("click");
-    //     if (!key) {
-    //       alert("No more click upgrades available!");
-    //       return;
-    //     }
-
-    //     const ok = purchaseUpgrade(key);
-    //     if (!ok) {
-    //       alert("Not enough rocks for that click upgrade!");
-    //     }
-    //     updateGameRPS();
-    //     updateCurrency();
-    //     updateRPS();
-    //   });
-
-    //   buyPickaxeUpgradeBtn.addEventListener("click", () => {
-    //     const key = getNextUpgradeKey("pickaxe");
-    //     if (!key) {
-    //       alert("No more pickaxe upgrades available!");
-    //       return;
-    //     }
-
-    //     const ok = purchaseUpgrade(key);
-    //     if (!ok) {
-    //       alert("Not enough rocks for that pickaxe upgrade!");
-    //     }
-    //     updateGameRPS();
-    //     updateCurrency();
-    //     updateRPS();
-    //   });
 
     // Wire reset
     resetBtn.addEventListener("click", () => {
@@ -314,6 +296,7 @@ function resetGameData() {
     // IMPORTANT: make a fresh copy, not a reference
     gameData = JSON.parse(JSON.stringify(defaultGameData));
     localStorage.setItem("gameData", JSON.stringify(gameData));
+    //force reload to update visuals (usually the updates are only triggered on user interaction)
     window.location.reload()
 }
 
@@ -326,32 +309,10 @@ function updateCurrency() {
 
 /*
 Purpose: Update the rocks-per-second display.
+Displays with 1 decimal of precision
 */
 function updateRPS() {
     rpsDisplay.textContent = Math.round(gameData.rps * 10) / 10;
-}
-
-/*
-Purpose: Find the next unpurchased upgrade key for a given type (ex: "click" or "pickaxe")
-Returns: a string key like "click-1", or null if none left
-*/
-function getNextUpgradeKey(prefix) {
-    const keys = Object.keys(gameData.upgrades)
-        .filter((k) => k.startsWith(prefix + "-"))
-        .sort((a, b) => {
-            // Sort by number after the dash (click-1, click-2, ...)
-            const aNum = parseInt(a.split("-")[1], 10);
-            const bNum = parseInt(b.split("-")[1], 10);
-            return aNum - bNum;
-        });
-
-    for (const k of keys) {
-        if (gameData.upgrades[k].purchased === false) {
-            return k;
-        }
-    }
-
-    return null;
 }
 
 function updateBuildingRpsGain(element){

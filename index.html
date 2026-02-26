@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +30,17 @@
         <div class="click-area">
           <img src="images/rock.png" id="clickTarget" class="rock" alt="A rock to click" draggable="false">
           <p class="hint">Click the rock to get rocks!</p>
+          <button id="helpBtn">Help</button>
+        </div>
+
+        <div id="helpPanel" class="hidden">
+          <h3>Instructions</h3>
+          <p> Click the rock to collect rocks. Buy buildings to gain rocks per second. Buy upgrades to make clicks and
+            buildings stronger.</p>
+          <h3>Upgrades</h3>
+          <ul id="helpUpgrades"></ul>
+          <h3>Achievements</h3>
+          <ul id="helpAchievements"></ul>
         </div>
       </section>
 
@@ -65,6 +77,7 @@
           <h3 class="shop-title">Buildings</h3>
 
           <button class="shop-item" type="button" id="click" value="pointer">
+            <img src="images/pointer.png" class="shop-img" alt="Pointer">
             <span class="shop-name">Pointer</span>
             <span class="shop-meta rps">+0.1 rps</span>
             <span class="shop-meta price">10 Rocks</span>
@@ -72,6 +85,7 @@
           </button>
 
           <button class="shop-item" type="button" id="pickaxe" value="pickaxe">
+            <img src="images/pickaxe.png" class="shop-img" alt="Pickaxe">
             <span class="shop-name">Pickaxe</span>
             <span class="shop-meta rps">+1 rps</span>
             <span class="shop-meta price">50 Rocks</span>
@@ -98,4 +112,5 @@
 
   </div>
 </body>
+
 </html>
