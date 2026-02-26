@@ -69,6 +69,7 @@ body {
   border: 1px solid #e6e6e6;
   background: #fafafa;
   padding: 10px;
+  user-select: none;
 }
 
 .rock:active {
@@ -149,6 +150,11 @@ body {
 
 .achieved {
   border: 1px solid #0ad10a;
+}
+
+.recent {
+  border: 1px solid gold;
+  box-shadow: 0px 0px 10px #ffff007a;
 }
 
 .shop-name {

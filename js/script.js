@@ -7,6 +7,7 @@ let buyPointerBtn;
 let buyPickaxeBtn;
 let upgradeShop;
 let achievementDisplay;
+let recentAchievementDisplay;
 let resetBtn;
 
 // In ms
@@ -44,6 +45,7 @@ window.addEventListener("load", () => {
     buyPickaxeBtn = document.querySelector("#pickaxe");
     upgradeShop = document.querySelector("#upgrade-shop")
     achievementDisplay = document.querySelector("#achievement-display")
+    recentAchievementDisplay = document.querySelector("#recent-achievement-display")
     resetBtn = document.querySelector("#resetBtn");
 
     // Wire building buttons
@@ -355,4 +357,21 @@ function updateRPS() {
 
 function updateBuildingRpsGain(element){
     element.querySelector(".rps").innerText = "+" + (gameData.buildings[element.value].rps * (2**getUpgradeCount(element.id))) + " rps"
+}
+
+function displayRecentAchievement(a){
+    let d = document.createElement("div")
+
+    d.classList.add("achievement-item", "recent")
+
+    let achievementName = document.createElement("span")
+    achievementName.classList.add("shop-name")
+    achievementName.innerText = a.name
+    d.appendChild(achievementName)
+
+    recentAchievementDisplay.appendChild(d);
+    //remove after 10 seconds
+    setTimeout(()=>{
+        d.remove();
+    }, 10000)
 }
