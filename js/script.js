@@ -285,7 +285,7 @@ window.addEventListener("load", () => {
         })
     }
 
-    for (const [key, value] of Object.entries(gameData.achievements.special).filter(a=>a.obtained)){
+    for (const [key, value] of Object.entries(gameData.achievements.special).filter(a=>a[1].obtained)){
         achievementDisplay.querySelector("#special-" + key).classList.add("achieved")
     }
 

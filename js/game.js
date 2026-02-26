@@ -111,9 +111,9 @@ function checkAchievements(){
         })
     }
 
-    if(gameData.ticksPlayed*tickInterval >= 600000){
+    if(!gameData.achievements.special["playtime-10m"].obtained && gameData.ticksPlayed*tickInterval >= 600000){
         gameData.achievements.special["playtime-10m"].obtained = true
         achievementDisplay.querySelector("#special-playtime-10m").classList.add("achieved")
-        displayRecentAchievement(a)
+        displayRecentAchievement(gameData.achievements.special["playtime-10m"])
     }
 }
