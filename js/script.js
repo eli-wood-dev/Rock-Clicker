@@ -399,6 +399,6 @@ function displayRecentAchievement(ach){
     recentAchievementDisplay.appendChild(el);
     //remove after 10 seconds
     setTimeout(()=>{
-        d.remove();
+        el.remove();
     }, 10000)
 }
