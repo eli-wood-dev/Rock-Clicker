@@ -1,3 +1,9 @@
+/**
+ * Made by Eli Wood and Gurbaz Sogi
+ * 2026-02-27
+ * This file contains the logic for displaying the game to the user and handles all DOM manipulation
+ */
+
 let currencyDisplay;
 let rpsDisplay;
 let clickValueDisplay;
@@ -29,7 +35,11 @@ window.addEventListener("load", () => {
     currencyDisplay = document.querySelector("#currencyDisplay");
     rpsDisplay = document.querySelector("#rpsDisplay span");
     clickValueDisplay = document.querySelector("#click-value-display");
+    upgradeShop = document.querySelector("#upgrade-shop")
+    achievementDisplay = document.querySelector("#achievement-display")
+    recentAchievementDisplay = document.querySelector("#recent-achievement-display")
 
+    //update the click value on startup
     clickValueDisplay.innerText = 2**getUpgradeCount("click");
 
     // Wire the rock click
@@ -43,9 +53,6 @@ window.addEventListener("load", () => {
     // Grab buttons
     buyPointerBtn = document.querySelector("#click");
     buyPickaxeBtn = document.querySelector("#pickaxe");
-    upgradeShop = document.querySelector("#upgrade-shop")
-    achievementDisplay = document.querySelector("#achievement-display")
-    recentAchievementDisplay = document.querySelector("#recent-achievement-display")
     resetBtn = document.querySelector("#resetBtn");
 
     // Wire building buttons
@@ -148,7 +155,7 @@ window.addEventListener("load", () => {
         upgradeShop.appendChild(b)
     }
 
-    // Add all achievements
+    // Add all achievements to the DOM
 
     // Score based achievements
     for (a of gameData.achievements.score) {
@@ -267,24 +274,31 @@ window.addEventListener("load", () => {
         updateRPS();
     });
 
+    // check if any achievements have already been obtained and updat the display
+
+    //score based achievements
     gameData.achievements.score.filter(a=>a.obtained).forEach(a=>{
         achievementDisplay.querySelector("#score-" + a.condition).classList.add("achieved")
     })
 
+    //rps based achievements
     gameData.achievements.rps.filter(a=>a.obtained).forEach(a=>{
         achievementDisplay.querySelector("#rps-" + a.condition).classList.add("achieved")
     })
 
+    //upgrade count based achievements
     gameData.achievements.upgradeCount.filter(a=>a.obtained).forEach(a=>{
         achievementDisplay.querySelector("#upgradeCount-" + a.condition).classList.add("achieved")
     })
 
+    //building count based achievements
     for (const [key, value] of Object.entries(gameData.achievements.building)){
         value.filter(a=>a.obtained).forEach(a=>{
             achievementDisplay.querySelector("#building-" + key + "-" + a.condition).classList.add("achieved")
         })
     }
 
+    //special achievements
     for (const [key, value] of Object.entries(gameData.achievements.special).filter(a=>a[1].obtained)){
         achievementDisplay.querySelector("#special-" + key).classList.add("achieved")
     }
@@ -297,11 +311,13 @@ window.addEventListener("load", () => {
     updateCurrency();
     updateRPS();
 
+    // Logic for help button
     let helpBtn = document.querySelector("#helpBtn");
     let helpPanel = document.querySelector("#helpPanel");
     let helpUpgrades = document.querySelector("#helpUpgrades");
     let helpAchievements = document.querySelector("#helpAchievements");
 
+    // Add possible upgrades to help button
     for (let key in gameData.upgrades) {
         let li = document.createElement("li");
         li.textContent = gameData.upgrades[key].name + 
@@ -309,6 +325,7 @@ window.addEventListener("load", () => {
         helpUpgrades.appendChild(li);
     }
 
+    // Add achievements to help button
     for (let group in gameData.achievements) {
         if (Array.isArray(gameData.achievements[group])) {
             for (let i = 0; i < gameData.achievements[group].length; i++) {
@@ -320,6 +337,7 @@ window.addEventListener("load", () => {
         }
     }
 
+    // Help button functionality
     helpBtn.addEventListener("click", function() {
         if (helpPanel.classList.contains("hidden")) {
             helpPanel.classList.remove("hidden");
@@ -329,9 +347,10 @@ window.addEventListener("load", () => {
     });
 });
 
-/*
-Purpose: Reset the game data back to default and save it.
-*/
+/**
+ * Resets the game to the default state.
+ * Forces refresh to update visuals.
+ */
 function resetGameData() {
     // IMPORTANT: make a fresh copy, not a reference
     gameData = JSON.parse(JSON.stringify(defaultGameData));
@@ -340,36 +359,44 @@ function resetGameData() {
     window.location.reload()
 }
 
-/*
-Purpose: Update the rocks display.
-*/
+/**
+ * Updates the currency display with the current amount rounded down
+ */
 function updateCurrency() {
     currencyDisplay.textContent = Math.floor(gameData.currency);
 }
 
-/*
-Purpose: Update the rocks-per-second display.
-Displays with 1 decimal of precision
-*/
+/**
+ Updates the rocks-per-second display.
+ Displays with 1 decimal of precision
+ */
 function updateRPS() {
     rpsDisplay.textContent = Math.round(gameData.rps * 10) / 10;
 }
 
+/**
+ * Updates the tooltip for the specified building to show the rps gain modified by upgrades.
+ * @param {object} element the DOM element for the building being updates
+ */
 function updateBuildingRpsGain(element){
     element.querySelector(".rps").innerText = "+" + (gameData.buildings[element.value].rps * (2**getUpgradeCount(element.id))) + " rps"
 }
 
-function displayRecentAchievement(a){
-    let d = document.createElement("div")
+/**
+ * Displays the specified achievement in the recent achievement section which removes itself after 10 seconds.
+ * @param {object} ach the game object for the achievement as stored in gameData
+ */
+function displayRecentAchievement(ach){
+    let el = document.createElement("div")
 
-    d.classList.add("achievement-item", "recent")
+    el.classList.add("achievement-item", "recent")
 
     let achievementName = document.createElement("span")
     achievementName.classList.add("shop-name")
-    achievementName.innerText = a.name
-    d.appendChild(achievementName)
+    achievementName.innerText = ach.name
+    el.appendChild(achievementName)
 
-    recentAchievementDisplay.appendChild(d);
+    recentAchievementDisplay.appendChild(el);
     //remove after 10 seconds
     setTimeout(()=>{
         d.remove();

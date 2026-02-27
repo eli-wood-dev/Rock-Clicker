@@ -1,3 +1,10 @@
+/**
+ * Made by Eli Wood and Gurbaz Sogi
+ * 2026-02-27
+ * This file stores the game data in a JSON format.
+ * This JSON is what gets saved to localStorage to give the game persistence.
+ */
+
 const defaultGameData = 
 {
     "ticksPlayed": 0,
@@ -167,4 +174,4 @@ const defaultGameData =
     }
 }
 
-let gameData = defaultGameData
+let gameData = JSON.parse(JSON.stringify(defaultGameData))
